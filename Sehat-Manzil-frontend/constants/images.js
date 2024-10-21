@@ -5,5 +5,8 @@ import path from "../assets/images/path.png";
 import logo from "../assets/images/logo.png";
 import logoSmall from "../assets/images/logo-small.png";
 import empty from "../assets/images/empty.png";
-
-export default { profile, thumbnail, cards, path, logo, logoSmall, empty };
+import onBoarding1 from "../assets/images/onBoarding1.png";
+import onBoarding2 from '../assets/images/onBoarding2.png';
+import onBoarding3 from '../assets/images/onBoarding3.png';
+import onBoarding4 from '../assets/images/onBoarding4.png';
+export default { profile, thumbnail, cards, path, logo, logoSmall, empty, onBoarding1, onBoarding2, onBoarding3, onBoarding4};
