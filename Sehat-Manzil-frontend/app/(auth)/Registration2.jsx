@@ -15,6 +15,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker'; // Import DateTimePicker
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import {images } from "../../constants"
+
 const Registration2 = () => {
     const [gender, setGender] = useState(''); // To hold the selected gender
     const [isGenderModalVisible, setGenderModalVisible] = useState(false); // Modal visibility
@@ -61,7 +63,7 @@ const Registration2 = () => {
                     {/* Profile Image and Text */}
                     <View className="items-center">
                         <Image
-                            source={require('../assets/images/registration1.png')}
+                            source={images.registration2}
                             className="w-48 h-48 mb-6"
                         />
                         <Text className="text-white text-2xl font-bold mb-2">Let's complete your profile</Text>
