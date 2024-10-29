@@ -11,4 +11,26 @@ import onBoarding3 from '../assets/images/onBoarding3.png';
 import onBoarding4 from '../assets/images/onBoarding4.png';
 import registration2 from "../assets/images/registration1.png";
 
-export default { profile, thumbnail, cards, path, logo, logoSmall, empty, onBoarding1, onBoarding2, onBoarding3, onBoarding4, registration2};
+import leanAndTone from "../assets/images/leanAndTone.png";
+import improveShape from "../assets/images/improveShape.png";
+import loseFat from "../assets/images/loseFat.png";
+import welcome from "../assets/images/welcome.png";
+
+export default { 
+  profile,
+  thumbnail, 
+  cards, 
+  path, 
+  logo, 
+  logoSmall, 
+  empty, 
+  onBoarding1, 
+  onBoarding2, 
+  onBoarding3, 
+  onBoarding4, 
+  registration2,
+  leanAndTone,
+  improveShape,
+  loseFat,
+  welcome
+};
