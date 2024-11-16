@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
 import { images } from '../../constants';
+import { router } from 'expo-router';
 
 const WelcomeScreen = ({ route }) => {
   // Get the name from route params, or use a default value
@@ -39,8 +40,7 @@ const WelcomeScreen = ({ route }) => {
           className="bg-purple-600 py-4 rounded-full w-full"
           activeOpacity={0.8}
           onPress={() => {
-            // Add your navigation logic here
-            // navigation.navigate('Home');
+            router.replace('/home')
           }}
         >
           <Text className="text-white text-lg font-semibold text-center">

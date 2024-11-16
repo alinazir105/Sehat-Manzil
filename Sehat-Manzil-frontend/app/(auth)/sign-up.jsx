@@ -1,7 +1,8 @@
-import { View, Text, ScrollView, Image} from 'react-native'
+import { View, Text, ScrollView, Image, Alert} from 'react-native'
 import React, {useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
+import axios from 'axios'
 
 import {images } from "../../constants"
 import FormField from '../../components/FormField'
@@ -17,9 +18,32 @@ const SignUp = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false) 
 
-  const submit = () => {
+  const submit = async () => {
+    setIsSubmitting(true);  // Set loading state
+      console.log(form.email + ' submitted' + form.password)
 
-  }
+      if(!form.username || !form.password){
+        Alert.alert('error','Fill all fields');
+        setIsSubmitting(false); 
+        return;
+      }
+    try {
+        // Sending form data (email and password) to the API
+        const res = await axios.post('http://192.168.1.110:3000/adduser', {
+            email: form.email,
+            pass: form.password, // Use the correct form field name for password
+        },
+      {headers:{"Content-Type":"application/json"}});
+
+        // Handle successful response
+        console.log('User added successfully:', res.data);
+        setIsSubmitting(false); // Reset loading state
+        router.replace('/userprofile')
+    } catch (error) {
+        console.error('Error submitting form:', error.response?.data || error.message);
+        setIsSubmitting(false); // Reset loading state
+    }
+}
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -38,23 +62,23 @@ const SignUp = () => {
 
           <FormField
             title="Username"
-            value={FormField.username}
-            handleChangeText={(e) => setForm({ ...FormField, username: e})}
+            value={form.username}
+            handleChangeText={(e) => setForm({ ...form, username: e })}
             otherStyles="mt-7"
           />
 
           <FormField
             title="Email"
-            value={FormField.email}
-            handleChangeText={(e) => setForm({ ...FormField, email: e})}
+            value={form.email}
+            handleChangeText={(e) => setForm({ ...form, email: e })}
             otherStyles="mt-7"
             keyboardType="email-address"
           />
 
           <FormField
             title="Password"
-            value={FormField.password}
-            handleChangeText={(e) => setForm({ ...FormField, password: e})}
+            value={form.password}
+            handleChangeText={(e) => setForm({ ...form, password: e })}
             otherStyles="mt-7"
           />
 

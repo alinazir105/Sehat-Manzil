@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient'; // Assuming you use expo-linear-gradient
-import { images } from '../constants';
+import { images } from '../../constants';
 import { useState } from 'react';
+import { router } from 'expo-router';
 const OnBoarding = () => {
-    
+        
     const [index, setIndex] = useState(0)
     const onBoardingArr = [
         {
@@ -31,11 +32,12 @@ const OnBoarding = () => {
     ]
 
     function handleClick() {
-        if(index < onBoardingArr.length-1){
-            setIndex((prevIndex) => prevIndex + 1)        
-        }
-        else{
-
+        if (index < onBoardingArr.length - 1) {
+            setIndex((prevIndex) => prevIndex + 1);
+        } else {
+            // Navigate to the sign-up route
+            router.replace('/sign-up')
+            
         }
     }
     return (

@@ -19,6 +19,30 @@ const AuthLayout = () => {
             headerShown: false
           }}
         />
+        {/* <Stack.Screen
+          name='registration1'
+          options={{
+            headerShown: false
+          }}
+        /> */}
+        <Stack.Screen
+          name='usergoals'
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='userprofile'
+          options={{
+            headerShown: false
+          }}
+        />
+        <Stack.Screen
+          name='welcome'
+          options={{
+            headerShown: false
+          }}
+        />
       </Stack>
       <StatusBar backgroundColor="#161622"/>
     </>

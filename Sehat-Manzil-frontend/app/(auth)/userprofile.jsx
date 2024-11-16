@@ -16,6 +16,7 @@ import DateTimePicker from '@react-native-community/datetimepicker'; // Import D
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {images } from "../../constants"
+import { router } from 'expo-router';
 
 const Registration2 = () => {
     const [gender, setGender] = useState(''); // To hold the selected gender
@@ -55,6 +56,10 @@ const Registration2 = () => {
         const numericValue = input.replace(/[^0-9]/g, ''); // Remove non-numeric characters
         setter(numericValue); // Update the state with numeric value
     };
+
+    const nextpage =()=>{
+        router.push('/usergoals')
+    }
 
     return (
             <SafeAreaView className="flex-1 bg-background">
@@ -140,7 +145,7 @@ const Registration2 = () => {
                     </View>
 
                     {/* Next Button */}
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={nextpage}>
                         <LinearGradient
                             colors={['#8A2BE2', '#5D3FD3']}
                             start={[0, 0]}

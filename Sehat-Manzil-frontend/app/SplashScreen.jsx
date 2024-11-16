@@ -24,7 +24,7 @@ export default function SplashScreen() {
             <View>
                 <CustomButton
                     title="Get Started"
-                    handlePress={() => router.push('/sign-up')}
+                    handlePress={() => router.push('/onboarding')}
                 />
             </View>
         </View>

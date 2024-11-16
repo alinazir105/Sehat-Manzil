@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, ScrollView, SafeAreaView, Dimensions } from 'react-native';
 import images from '../../constants/images';
+import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
@@ -75,7 +76,7 @@ const GoalSelectionScreen = () => {
     // Get the currently selected goal
     const selectedGoal = originalGoals[currentIndex - 1];
     console.log(`Selected goal: ${selectedGoal.title}`);
-    // Add your navigation logic here
+    router.replace('/welcome')
   };
 
   const renderGoalCard = (goal, index) => (
