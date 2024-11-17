@@ -55,4 +55,48 @@ client.connect()
         }
     });
 
+    app.post('/signin', async (req, res) => {
+        try {
+            const { email, pass } = req.body;
+            
+            // Validate inputs
+            if (!email || !pass) {
+                return res.status(400).json({ 
+                    success: false, 
+                    message: 'Email and password are required' 
+                });
+            }
+    
+            // Query to check if user exists with provided credentials
+            const query = 'SELECT * FROM users WHERE email = $1 AND pass = $2';
+            const values = [email, pass];
+    
+            const result = await client.query(query, values);
+    
+            if (result.rows.length > 0) {
+                // User found - login successful
+                res.status(200).json({ 
+                    success: true, 
+                    message: 'Login successful',
+                    user: {
+                        email: result.rows[0].email,
+                        // Add any other user data you want to send
+                        // Don't send sensitive information like passwords
+                    }
+                });
+            } else {
+                // No user found with those credentials
+                res.status(401).json({ 
+                    success: false, 
+                    message: 'Invalid email or password' 
+                });
+            }
+        } catch (err) {
+            console.error('Error during signin:', err.stack);
+            res.status(500).json({ 
+                success: false, 
+                message: 'Internal Server Error' 
+            });
+        }
+    });
 app.listen(3000, ()=>{console.log('listening on on 3000')});
