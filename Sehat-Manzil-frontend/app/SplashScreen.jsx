@@ -3,8 +3,27 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../constants';
 import CustomButton from '../components/CustomButton';
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect } from 'react';
 
 export default function SplashScreen() {
+
+    const onboarded =  () => {
+        router.push('/onboarding');
+    };
+
+    useEffect(() => {
+        AsyncStorage.getItem('onboarded')
+           .then(value => {
+                if (value === 'true') {
+                    router.replace('/sign-in');
+                } else {
+                    onboarded();
+                }
+            });
+    }, []);
+
+
   return (
     <SafeAreaView className="bg-background h-full">
         <View className="flex-1 justify-between p-12">
@@ -24,7 +43,7 @@ export default function SplashScreen() {
             <View>
                 <CustomButton
                     title="Get Started"
-                    handlePress={() => router.push('/onboarding')}
+                    handlePress={onboarded}
                 />
             </View>
         </View>

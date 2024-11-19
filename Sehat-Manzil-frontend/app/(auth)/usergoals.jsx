@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView, SafeAreaView, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, SafeAreaView, Dimensions, Alert } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage'; // Import Async Storage
 import images from '../../constants/images';
 import { router } from 'expo-router';
+import axios from 'axios'; // Import Axios for API requests
 
 const { width } = Dimensions.get('window');
 
@@ -72,11 +74,40 @@ const GoalSelectionScreen = () => {
     }
   };
 
-  const handleContinue = () => {
-    // Get the currently selected goal
-    const selectedGoal = originalGoals[currentIndex - 1];
-    console.log(`Selected goal: ${selectedGoal.title}`);
-    router.replace('/welcome')
+  const handleContinue = async () => {
+    const selectedGoal = originalGoals[currentIndex - 1].title;
+
+    try {
+      // Get existing user data
+      const userData = await AsyncStorage.getItem('user');
+      const user = userData ? JSON.parse(userData) : {};
+
+      // Prepare the profile data
+      const profileData = {
+        email: user.email, // Assuming email is stored in AsyncStorage
+        date_of_birth: user.dateOfBirth || '', // Add default if not available
+        gender: user.gender || '',
+        weight: user.weight || 0,
+        height: user.height || 0,
+        goal: selectedGoal,
+      };
+      console.log(profileData)
+      // Call the API
+      const response = await axios.post('http://192.168.1.110:3000/adduserprofile', profileData);
+
+      if (response.data.success) {
+        console.log('User profile saved successfully:', response.data);
+        Alert.alert('Success', 'Your profile has been updated.');
+
+        // Navigate to the next screen
+        router.replace('/welcome');
+      } else {
+        Alert.alert('Error', response.data.message || 'Failed to save profile.');
+      }
+    } catch (error) {
+      console.error('Error saving profile:', error);
+      Alert.alert('Error', 'An error occurred while saving your profile.');
+    }
   };
 
   const renderGoalCard = (goal, index) => (

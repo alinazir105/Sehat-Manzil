@@ -99,4 +99,39 @@ client.connect()
             });
         }
     });
+
+    app.post('/adduserprofile', async (req, res) => {
+        console.log(req.body)
+        const { email, date_of_birth, gender, weight, height, goal } = req.body; // Extract values from the request body
+        console.log(email, date_of_birth, gender, weight, height, goal); // For debugging purposes
+        try {
+            // Insert query to add a new user profile
+            const query = 'INSERT INTO user_profile (email, date_of_birth, gender, weight, height, goal) VALUES ($1, $2, $3, $4, $5, $6)';
+            const values = [email, date_of_birth, gender, weight, height, goal];
+    
+            // Execute the query
+            await client.query(query, values);
+    
+            // Respond with success
+            res.status(201).json({
+                success: true,
+                message: 'User profile added successfully',
+                user: {
+                    email,
+                    date_of_birth,
+                    gender,
+                    weight,
+                    height,
+                    goal
+                }
+            });
+        } catch (err) {
+            console.error('Error during adding user profile:', err.stack);
+            res.status(500).json({
+                success: false,
+                message: 'Internal Server Error'
+            });
+        }
+    });
+    
 app.listen(3000, ()=>{console.log('listening on on 3000')});

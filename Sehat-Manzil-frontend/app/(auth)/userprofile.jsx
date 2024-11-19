@@ -9,6 +9,7 @@ import {
     FlatList,
     TouchableWithoutFeedback,
     Platform,
+    Alert,
 } from 'react-native';
 import { ChevronDownIcon } from 'react-native-heroicons/solid';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -17,6 +18,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import {images } from "../../constants"
 import { router } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Registration2 = () => {
     const [gender, setGender] = useState(''); // To hold the selected gender
@@ -57,9 +59,34 @@ const Registration2 = () => {
         setter(numericValue); // Update the state with numeric value
     };
 
-    const nextpage =()=>{
-        router.push('/usergoals')
-    }
+    const nextpage = async () => {
+        if (!gender || !dateOfBirth || !weight || !height) {
+            Alert.alert('Error', 'Fill all required fields');
+            return;
+        }
+    
+        try {
+            const user = await AsyncStorage.getItem('user'); // Await the result
+            const parsedUser = user ? JSON.parse(user) : {}; // Parse only if a value exists
+    
+            // Add or update additional information in AsyncStorage
+            await AsyncStorage.setItem('user', JSON.stringify({
+                ...parsedUser,
+                gender,
+                dateOfBirth: formatDate(dateOfBirth),
+                weight,
+                height,
+            }));
+
+            const data = await AsyncStorage.getItem('user')
+            const parsedData = data? JSON.parse(data) : {}; // Parse only if a value exists
+            // Navigate to the next page
+            router.push('/usergoals');
+        } catch (error) {
+            console.error('Error reading or updating AsyncStorage:', error);
+        }
+    };
+    
 
     return (
             <SafeAreaView className="flex-1 bg-background">
