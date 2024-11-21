@@ -1,0 +1,10 @@
+CREATE TYPE user_status AS ENUM ('active', 'not verified', 'deleted', 'blocked');
+
+CREATE TABLE users (
+    userid SERIAL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    pass VARCHAR(255) NOT NULL,
+    roles VARCHAR(255),
+    status user_status NOT NULL DEFAULT 'not verified',
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
