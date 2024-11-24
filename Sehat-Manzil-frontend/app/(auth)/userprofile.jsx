@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -31,6 +31,28 @@ const Registration2 = () => {
     // Gender options array
     const genderOptions = ['Male', 'Female', 'Other'];
 
+    useEffect(() => {
+        const checkUserGoal = async () => {
+            try {
+                const user = await AsyncStorage.getItem('user');
+                console.log('====================================');
+                console.log(user);
+                console.log('====================================');
+                const parsedUser = user ? JSON.parse(user) : null;
+    
+                if (parsedUser?.goal) {
+                    // If goal exists, navigate to home.jsx
+                    router.push('/home');
+                }
+            } catch (error) {
+                console.error('Error checking user goal:', error);
+            }
+        };
+    
+        checkUserGoal();
+    }, []);
+    
+    
     // Function to handle selecting gender
     const selectGender = (selectedGender) => {
         setGender(selectedGender); // Set the selected gender

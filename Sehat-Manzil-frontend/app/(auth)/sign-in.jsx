@@ -9,6 +9,7 @@ import { images } from "../../constants"
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
 import { useEffect } from 'react'
+import { BASE_URL } from '../../constants/api'
 
 const SignIn = () => {
     const [form, setForm] = useState({
@@ -22,15 +23,15 @@ const SignIn = () => {
 
     // In the submit function, change the router.replace line:
 const submit = async () => {
-  setIsSubmitting(true);
+  
   if (!form.email || !form.password) {
       Alert.alert('Error', 'Please fill in all fields');
       setIsSubmitting(false);
       return;
   }
-
+  setIsSubmitting(true);
   try {
-      const response = await axios.post('http://192.168.1.110:3000/signin', {
+      const response = await axios.post(`${BASE_URL}/signin`, {
           email: form.email,
           pass: form.password
       }, {
@@ -44,7 +45,7 @@ const submit = async () => {
             email: response.data.user.email
           }
           await AsyncStorage.setItem('user',JSON.stringify(profile) );  
-          router.replace('/userprofile'); 
+          router.replace('/home'); 
       }
   } catch (error) {
       console.error('Login error:', error.response?.data || error.message);

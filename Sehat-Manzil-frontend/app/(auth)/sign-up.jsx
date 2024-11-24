@@ -7,6 +7,8 @@ import axios from 'axios'
 import {images } from "../../constants"
 import FormField from '../../components/FormField'
 import CustomButton from '../../components/CustomButton'
+import { BASE_URL } from '../../constants/api'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const SignUp = () => {
 
@@ -29,7 +31,7 @@ const SignUp = () => {
       }
     try {
         // Sending form data (email and password) to the API
-        const res = await axios.post('http://192.168.1.110:3000/adduser', {
+        const res = await axios.post(`${BASE_URL}/adduser`, {
             email: form.email,
             pass: form.password, // Use the correct form field name for password
         },
@@ -37,7 +39,12 @@ const SignUp = () => {
 
         // Handle successful response
         console.log('User added successfully:', res.data);
-        setIsSubmitting(false); // Reset loading state
+        setIsSubmitting(false);
+        const profile = {
+          email: form.email,
+        };
+        await AsyncStorage.setItem('user', JSON.stringify(profile));
+   // Reset loading state
         router.replace('/userprofile')
     } catch (error) {
         console.error('Error submitting form:', error.response?.data || error.message);

@@ -4,6 +4,7 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
+    "dev": "nodemon backend/server.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web"
@@ -19,6 +20,7 @@
     "expo-linking": "~6.3.1",
     "expo-router": "~3.5.16",
     "expo-status-bar": "~1.12.1",
+    "lucide-react-native": "^0.460.0",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.74.2",

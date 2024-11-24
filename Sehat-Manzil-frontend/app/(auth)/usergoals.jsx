@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'; // Import 
 import images from '../../constants/images';
 import { router } from 'expo-router';
 import axios from 'axios'; // Import Axios for API requests
+import { BASE_URL } from '../../constants/api';
 
 const { width } = Dimensions.get('window');
 
@@ -76,29 +77,38 @@ const GoalSelectionScreen = () => {
 
   const handleContinue = async () => {
     const selectedGoal = originalGoals[currentIndex - 1].title;
-
+  
     try {
-      // Get existing user data
+      // Retrieve the existing user object from AsyncStorage
       const userData = await AsyncStorage.getItem('user');
       const user = userData ? JSON.parse(userData) : {};
-
-      // Prepare the profile data
+  
+      // Append the selected goal to the user object
+      const updatedUser = {
+        ...user,
+        goal: selectedGoal, // Add or update the goal property
+      };
+  
+      // Save the updated user object back to AsyncStorage
+      await AsyncStorage.setItem('user', JSON.stringify(updatedUser));
+  
+      // Prepare the profile data for the API
       const profileData = {
-        email: user.email, // Assuming email is stored in AsyncStorage
-        date_of_birth: user.dateOfBirth || '', // Add default if not available
-        gender: user.gender || '',
-        weight: user.weight || 0,
-        height: user.height || 0,
+        email: updatedUser.email || '', // Ensure email is included
+        date_of_birth: updatedUser.dateOfBirth || '',
+        gender: updatedUser.gender || '',
+        weight: updatedUser.weight || 0,
+        height: updatedUser.height || 0,
         goal: selectedGoal,
       };
-      console.log(profileData)
+  
       // Call the API
-      const response = await axios.post('http://192.168.1.110:3000/adduserprofile', profileData);
-
+      const response = await axios.post(`${BASE_URL}/adduserprofile`, profileData);
+  
       if (response.data.success) {
         console.log('User profile saved successfully:', response.data);
         Alert.alert('Success', 'Your profile has been updated.');
-
+  
         // Navigate to the next screen
         router.replace('/welcome');
       } else {
@@ -109,6 +119,7 @@ const GoalSelectionScreen = () => {
       Alert.alert('Error', 'An error occurred while saving your profile.');
     }
   };
+  
 
   const renderGoalCard = (goal, index) => (
     <View 
