@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { router } from 'expo-router';
 import { BASE_URL } from '../../constants/api';
+import { ChevronLeftIcon } from 'react-native-heroicons/outline';
 
 
 const ViewWorkouts = () => {
@@ -155,9 +156,20 @@ const ViewWorkouts = () => {
     );
   }
 
+  const BackButton = () => (
+    <TouchableOpacity 
+      className="absolute top-8 left-2 p-2 bg-gray-800/50 rounded-full"
+      onPress={() => router.push('/manage-workouts')}
+      activeOpacity={0.7}
+    >
+      <ChevronLeftIcon color="white" size={24} />
+    </TouchableOpacity>
+  );
+
   return (
     <SafeAreaView className="bg-gray-900 flex-1">
-      <View className="p-4">
+      <BackButton/>
+      <View className="p-4 mt-10">
         <Text className="text-white text-2xl font-bold mb-6">
           My Workouts
         </Text>

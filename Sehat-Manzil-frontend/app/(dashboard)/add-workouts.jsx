@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { router } from 'expo-router';
 import { BASE_URL } from '../../constants/api';
+import { ChevronLeftIcon } from 'react-native-heroicons/outline';
 
 const AddWorkouts = () => {
   const [workouts, setWorkouts] = useState([]);
@@ -40,7 +41,7 @@ const AddWorkouts = () => {
 
   const handleAddWorkout = async (workoutId) => {
     try {
-      const response = await axios.post('http://192.168.1.107:3000/addUserWorkout', {
+      const response = await axios.post(`${BASE_URL}/addUserWorkout`, {
         email: userEmail,
         workout_id: workoutId
       });
@@ -95,14 +96,25 @@ const AddWorkouts = () => {
     </View>
   );
 
+  const BackButton = () => (
+    <TouchableOpacity 
+      className="absolute top-8 left-2 p-2 bg-gray-800/50 rounded-full"
+      onPress={() => router.push('/manage-workouts')}
+      activeOpacity={0.7}
+    >
+      <ChevronLeftIcon color="white" size={24} />
+    </TouchableOpacity>
+  );
+
   return (
-    <SafeAreaView className="bg-gray-900 flex-1">
+    <SafeAreaView className="bg-gray-900 flex-1 pt-10">
+      <BackButton/>
       <View className="p-4">
         <Text className="text-white text-2xl font-bold mb-6">
           Available Workouts
         </Text>
         
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} className="mb-10">
           {workouts.map((workout) => (
             <WorkoutCard key={workout.workout_id} workout={workout} />
           ))}

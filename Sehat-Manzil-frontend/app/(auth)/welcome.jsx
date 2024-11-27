@@ -1,25 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, Image } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { images } from '../../constants';
 import { router } from 'expo-router';
 
-const WelcomeScreen = ({ route }) => {
-  // Get the name from route params, or use a default value
-  const { name = 'Stefani' } = route?.params || {};
+const WelcomeScreen = () => {
+  const [name, setName] = useState('User');
+
+  useEffect(() => {
+    const extractNameFromEmail = async () => {
+      try {
+        const user = await AsyncStorage.getItem('user');
+        if (user) {
+          const parsedUser = JSON.parse(user);
+          if (parsedUser.email) {
+            // Extract name from email (everything before @)
+            const extractedName = parsedUser.email.split('@')[0];
+            // Capitalize the first letter
+            const formattedName = extractedName.charAt(0).toUpperCase() + extractedName.slice(1);
+            setName(formattedName);
+          }
+        }
+      } catch (error) {
+        console.error('Error extracting name from email:', error);
+      }
+    };
+
+    extractNameFromEmail();
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-background">
-
       {/* Main Content */}
       <View className="flex-1 justify-center items-center px-6">
-
-        <View >
+        <View>
           {/* Illustration */}
           <Image
-            source={images.welcome} // Make sure to add this image to your assets
+            source={images.welcome}
             className="w-64 h-64 mb-8"
             resizeMode="contain"
-            />
+          />
 
           {/* Welcome Text */}
           <View className="items-center">
@@ -31,7 +51,6 @@ const WelcomeScreen = ({ route }) => {
             </Text>
           </View>
         </View>
-
       </View>
       
       {/* Bottom Button */}

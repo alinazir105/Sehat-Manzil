@@ -1,20 +1,23 @@
 import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
 import { BASE_URL } from '../../constants/api';
 import { router } from 'expo-router';
+import { ChevronLeftIcon } from 'react-native-heroicons/outline';
 
 const SearchExercise = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [exercises, setExercises] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState('keyword');
-  const [muscleGroups, setMuscleGroups] = useState([
-    'Glutes','Triceps', 'Cardio', 'Full Body', 'Back', 'Biceps', 'Legs', 'Hamstrings', 'Chest', 'Shoulders', 'Quads', 'Core'
-  ]);
 
-  const handleSearch = async () => {
+  const muscleGroups = useMemo(() => [
+    'Glutes','Triceps', 'Cardio', 'Full Body', 'Back', 
+    'Biceps', 'Legs', 'Hamstrings', 'Chest', 'Shoulders', 'Quads', 'Core'
+  ], []);
+
+  const handleSearch = useCallback(async () => {
     if (!searchQuery.trim()) return;
     
     setLoading(true);
@@ -38,17 +41,16 @@ const SearchExercise = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [searchQuery, selectedFilter]);
 
-  const handleExercisePress = (exercise) => {
-    // Navigate to exercise details with the full exercise object
+  const handleExercisePress = useCallback((exercise) => {
     router.push({
       pathname: '/exercise-details',
       params: { exercise: JSON.stringify(exercise) }
     });
-  };
+  }, []);
 
-  const ExerciseCard = ({ exercise }) => (
+  const ExerciseCard = React.memo(({ exercise }) => (
     <TouchableOpacity 
       className="bg-purple-900 rounded-xl p-4 mb-4"
       onPress={() => handleExercisePress(exercise)}
@@ -65,11 +67,23 @@ const SearchExercise = () => {
       
       <Text className="text-gray-300" numberOfLines={2}>{exercise.instructions}</Text>
     </TouchableOpacity>
+  ));
+
+  const BackButton = () => (
+    <TouchableOpacity 
+      className="absolute top-8 left-2 p-2 bg-gray-800/50 rounded-full"
+      onPress={() => router.push('/manage-workouts')}
+      activeOpacity={0.7}
+    >
+      <ChevronLeftIcon color="white" size={24} />
+    </TouchableOpacity>
   );
+
 
   return (
     <SafeAreaView className="bg-gray-900 flex-1">
-      <View className="p-4">
+      <BackButton/>
+      <View className="p-4 pb-16 mt-10">
         <Text className="text-white text-2xl font-bold mb-6">
           Search Exercises
         </Text>
@@ -134,7 +148,7 @@ const SearchExercise = () => {
           </ScrollView>
         )}
 
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{flexGrow:1}}>
           {loading ? (
             <ActivityIndicator size="large" color="#9333EA" />
           ) : exercises.length > 0 ? (

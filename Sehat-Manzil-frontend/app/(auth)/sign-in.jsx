@@ -62,8 +62,14 @@ useEffect(() => {
     const checkUser = async () => {
         try {
             const user = await AsyncStorage.getItem('user');
-            if (user) {
-                router.replace('/userprofile');
+            const parsedUser = user ? JSON.parse(user) : null;
+            console.log(parsedUser)
+            // Check for a specific condition, like if the goal exists
+            if (parsedUser?.goal) {
+                router.replace('/home');
+            } else if (parsedUser?.email) {
+                // If email exists but no goal, route to appropriate screen
+                router.replace('/userprofile');  // or whatever screen is next in your flow
             }
         } catch (error) {
             console.error('Error fetching user:', error);
@@ -72,7 +78,6 @@ useEffect(() => {
 
     checkUser();
 }, []);
-
     return (
         <SafeAreaView className="bg-primary h-full">
             <ScrollView>

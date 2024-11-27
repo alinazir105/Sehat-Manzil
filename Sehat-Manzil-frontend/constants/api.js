@@ -15,7 +15,7 @@ const getLocalIP = () => {
 
 // For real devices, you'll need to use your computer's local network IP
 // You can set this manually or use environment variables
-const DEV_MACHINE_IP = '192.168.1.107'; // Your development machine's IP
+const DEV_MACHINE_IP = '172.16.81.48'; // Your development machine's IP
 
 export const BASE_URL = __DEV__ 
   ? Platform.select({

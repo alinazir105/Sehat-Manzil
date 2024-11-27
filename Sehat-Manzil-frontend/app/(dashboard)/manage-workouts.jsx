@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from 'expo-router';
+import { ChevronLeftIcon } from 'react-native-heroicons/outline';
 
 const ManageWorkouts = () => {
   const [username, setUsername] = useState('');
@@ -50,7 +51,7 @@ const ManageWorkouts = () => {
 
   // Welcome section component
   const WelcomeSection = () => (
-    <View className="mb-6">
+    <View className="mt-10">
       <Text className="text-white text-2xl font-bold">
         Welcome, {username}!
       </Text>
@@ -78,11 +79,24 @@ const ManageWorkouts = () => {
     </View>
   );
 
+
+// Replace the existing BackButton component with:
+const BackButton = () => (
+  <TouchableOpacity 
+    className="absolute top-8 left-2 p-2 bg-gray-800/50 rounded-full"
+    onPress={() => router.push('/home')}
+    activeOpacity={0.7}
+  >
+    <ChevronLeftIcon color="white" size={24} />
+  </TouchableOpacity>
+);
+
   return (
     <SafeAreaView className="bg-gray-900 h-full p-4">
-      <WelcomeSection />
+        <BackButton/>
+        <WelcomeSection />
       
-      <View className="flex-1 justify-center space-y-6">
+      <View className="flex-1 justify-center ">
         <ActionCard 
           title="Add Workouts" 
           onPress={handleAddWorkouts} 
